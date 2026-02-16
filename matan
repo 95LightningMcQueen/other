@@ -168,6 +168,18 @@ public:
     }
 };
 //матрицы
+	int** mtrx = new int* [rows];
+	for (int i = 0; i < rows; ++i)
+	{
+		mtrx[i] = new int[cols];
+	}
+
+	for (int i = 0; i < rows; ++i)
+	{
+		delete [] mtrx[i];
+	}
+	delete[] mtrx;
+
 void InputMtrx (int** mtrx, int rows, int cols)
 {
 	std::cout << "\ninput your mtrx: ";
