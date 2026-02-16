@@ -30,7 +30,6 @@ void SdvigDArray(int* array, int size)
 //шифт через три реверса
 void ShiftCherezTri(int* arr, int size, int k)
 {
-
 	ReverseArray(arr, size);
 	ReverseArray(arr, k);
 	ReverseArray(arr + k, size - k);
@@ -168,3 +167,28 @@ public:
         std::cout << "]" << std::endl;
     }
 };
+//матрицы
+void InputMtrx (int** mtrx, int rows, int cols)
+{
+	std::cout << "\ninput your mtrx: ";
+	for (int i = 0; i < rows; ++i)
+	{
+		for (int j = 0; j < cols; ++j)
+		{
+			std::cin >> mtrx[i][j];
+		}
+	}
+}
+
+void OutputMtrx(int** mtrx, int rows, int cols)
+{
+	std::cout << "\nyour mtrx: ";
+	for (int i = 0; i < rows; ++i)
+	{
+		std::cout << '\n';
+		for (int j = 0; j < cols; ++j)
+		{
+			std::cout << mtrx[i][j] << ' ';
+		}
+	}
+}
