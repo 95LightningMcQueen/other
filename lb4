@@ -1,0 +1,49 @@
+Лабораторная работа №4.
+1. Технические требования к схеме данных:
+1.1.Создайте базу данныX SalesDB:
+•
+Таблица Customers
+CustomerID INT -> первичный ключ, автоинкремент (IDENTITY(1, 1))
+FullName NVARCHAR(100) -> NOT NULL ° Email NVARCHAR (100) -> UNIQUE, NOT NULL
+° RegistrationDate DATETIME -> NOT NULL, значение по умолчанию GETDATE ()
+•
+Таблица Orders
+oOrderID INT -> первичный ключ, автоинкремент
+CustomerID INT -> NOT NULL, внeшний ключ на Customers (CustomerID)
+OrderTotal FLOAT -> NOT NULL, CHECK (OrderTotal > 0)
+OrderDate DATETIME -> NOT NULL, значение по умолчанию GETDATE ()
+Status NVARCHAR (20) -> NOT NULL, значение по умолчанию 'Новый'
+1.2. Создайте базу данных LogisticsDB
+•
+Таблица Warehouses
+WarehouseID INT -> первичный ключ, автоинкремент
+Location NVARCHAR (100) -> UNIQUE, NOT NULL
+oCapacity FLOAT -> NOT NULL
+o ManagerContact NVARCHAR(50) -> NOT NULL, 3hачение по умолчанию 'He назначен
+CreatedDate DATETIME -> NOT NULL, значение по умолчанию GETDATE ()
+•
+Таблица Shipments
+Shipment ID INT -> первичный ключ, автоинкремент
+O WarehouseID INT -> NOT NULL, Bheшний ключ Warehouses (WarehouseID)
+o OrderId INT -> NOT NULL (логическая ссылка на заказ из SalesDB)
+TrackingCode NVARCHAR(50) -> UNIQUE, NOT NULL
+Weight FLOAT -> NOT NULL
+DispatchDate DATETIME -> может быть NULL
+Status NVARCHAR (20) -> NOT NULL, значение по умолчанию "Ожидает отправки
+2. Функции для SELECT
+2.1. Прямые SELECT-запросы в тестовом скрипте запрещены.
+2.2. Реализуйте табличные или скалярные функции: fn GetCustomers(), fn GetOrdersByStatus(@status), fn GetShipmentsByWarehouse(@wid) и т.д.
+2.3. Все выборки выполняются только через вызовы: SELECT * FROM dbo.fn_…();
+3. Кросс-базовый триггер
+3.1. Создайте один триггер на таблице SalesDB.dbo.Orders (события AFTER INSERT, UPDATE).
+3.2. При изменении статуса заказа на 'Подтвержден' триггер должен автоматически создавать запись LogisticsDB.dbo.Shipments:
+3.3. Генерировать уникальный TrackingCode (например, TRK + NEWID() или таймстамп)
+3.4. Копировать OrderID, устанавливать Weight = 1.0, Status = 'Ожидает отправки', DispatchDate = NULL
+3.5. Назначать склад по умолчанию (WarehouseID = 1, убедитесь, что он существует в тестовых данных)
+3.6. Триггер должен корректно работать в контексте обеих БД. При ошибках должен откатывать транзакцию создания заказа (используйте RAISERROR/THROW внутри триггера или обработку в вызывающей процедуре).
+4. Тестовые сценарии (обязательны для проверки)
+4.1. Корректная вставка: Выполните процедуры вставки клиента и заказа. Убедитесь, что данные появились в таблицах.
+4.2. Отработка триггера: Обновите статус заказа на 'Подтвержден'. Проверьте, что в LogisticsDB.dbo.Shipments появилась соответствующая запись.
+4.3. Обработка ошибки: Попробуйте вставить заказ с OrderTotal <= 0 или дублирующим Email. Убедитесь, что транзакция откатывается, данные не сохраняются, а выводится осмысленное сообщение об ошибке.
+4.4. Работа через функции: Выполните выборку клиентов, заказов и отправок только через созданные функции. Прямые SELECT в отчёте запрещены.
+4. 5. Транзакционная целостность: Имитируйте сценарий, где в процедуре UPDATE возникает деление на ноль или нарушение UNIQUE. Убедитесь в автоматическом ROLLBACK.
