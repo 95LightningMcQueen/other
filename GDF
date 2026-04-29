@@ -1,0 +1,73 @@
+# def generator(array: list) -> int: 
+#     for i in array:
+#         if i % 2 == 0:
+#             yield i ** 2
+
+# array = [1, 2, 3, 4, 5, 6, 7]
+
+# print(generator(array))
+
+# for i in generator(array):
+#     print(i)
+
+# def average(marks):
+#     s = 0
+#     count = 0
+#     for i in range(len(marks)):
+#         s += marks[i]
+#         count += 1
+#     return s // count
+# print('Average:', average(all_marks))
+
+with open('отметки.csv', 'w', encoding="Utf8") as F:
+    F.write('Petrov 2\nIvanov 10\nAbramov 10\nKazancev 5\nGerasimov 4\nDavidov 8')
+
+names = []
+marks = []
+with open('отметки.csv', 'r', encoding="Utf8") as F:
+    for line in F:
+        arr = line.strip().split(' ')
+        names.append(arr[0])
+        marks.append(float(arr[1]))  
+        print(arr)
+
+avg = sum(marks) // len(marks)
+max_val = max(marks)
+min_val = min(marks)
+
+best_students = []
+worst_students = []
+for i in range(len(marks)):
+    if marks[i] == max_val:
+        best_students.append(names[i])
+    if marks[i] == min_val:
+        worst_students.append(names[i])
+
+print('Average:', avg)
+print(f'Max: {max_val}. student(s): {best_students}')
+print(f'Min: {min_val}. student(s): {worst_students}')
+
+
+with open('текст.csv', 'w', encoding="Utf8") as F:
+    F.write('Of course, I am ready to help! To write a "human-like text" based on your request, I need to understand exactly what you want to get. Please clarify what you mean by "text" and what kind of text you need. Here are a few options of what you might mean and how I can help you: Do you want me to write a text on a specific topic? If yes, what should this text be about? (For example: travel, technology, personal experiences, science, a fictional story, etc.) What style do you prefer? (For example: formal, informal, conversational, poetic, scientific, artistic, humorous, etc.) Who is this text intended for? (For example: the general public, specialists, children, friends, etc.) What length of text do you need? (For example: a short message, a paragraph, an article, a story, etc.) Do you want me to rewrite an existing text to make it more "human-like" or understandable? If yes, please provide me with this text. Explain exactly what in it')
+
+textik = []
+with open('текст.csv', 'r', encoding="Utf8") as f:
+    for line in f:
+        arr = line.strip().split(' ')
+        for word in arr:
+            textik.append(word)
+print(textik)
+
+word_counts = {}
+for word in textik:
+    clean_word = word.strip('.,!?:;()')
+    if clean_word == '': 
+        continue
+    if clean_word in word_counts:
+        word_counts[clean_word] += 1
+    else:
+        word_counts[clean_word] = 1
+
+for word, count in word_counts.items():
+    print(f'{word}: {count}')
