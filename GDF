@@ -31,7 +31,7 @@ with open('отметки.csv', 'r', encoding="Utf8") as F:
         marks.append(float(arr[1]))  
         print(arr)
 
-avg = sum(marks) // len(marks)
+avg = sum(marks) / len(marks)
 max_val = max(marks)
 min_val = min(marks)
 
@@ -69,5 +69,11 @@ for word in textik:
     else:
         word_counts[clean_word] = 1
 
+sorted_keys = sorted(word_counts, key=word_counts.get, reverse=True)
+
 for word, count in word_counts.items():
     print(f'{word}: {count}')
+    
+
+# if clean_word != '':
+#     word_counts[clean_word] = word_counts.get(clean_word, 0) + 1
