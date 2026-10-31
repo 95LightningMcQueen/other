@@ -28,6 +28,7 @@ New-Item -ItemType File C:\Share\Lab\readme.txt -Value "Лабораторная
 
 Set-ADUser -Identity student1 -HomeDrive "Z:" -HomeDirectory "\\SRV-DC01\Lab"
 
+New-SmbShare -Name Lab -Path C:\Share\Lab -ChangeAccess "Прошедшие проверку"
 Get-SmbShare Lab
 Get-Acl C:\Share\Lab | Format-List
 
